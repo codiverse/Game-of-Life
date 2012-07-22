@@ -154,7 +154,7 @@ def process_cells(universe):
 
 def set_options():
     """ Separated out to keep main() code cleaner """
-    # TODO: add option for which layout to use
+    # TODO: add option for which layout to use, and time tick rate
     parser = OptionParser()
     parser.add_option("-g", "--generations", dest="generations", default=50, 
                       help="Number of Generations to run for")

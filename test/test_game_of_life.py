@@ -9,10 +9,10 @@ class grid_test(TestCase):
     
     def setUp(self):
         self.universe =  [
-             [0,0,1,0,0,0],
-             [0,0,1,0,0,0],
-             [0,0,1,0,0,0],
              [0,0,0,0,0,0],
+             [0,0,1,0,0,0],
+             [0,0,1,0,0,0],
+             [0,0,1,0,0,0],
              [0,0,0,0,0,0],
              [0,0,0,0,0,0]
           ]
@@ -24,17 +24,17 @@ class game_of_life_test(TestCase):
     
     def setUp(self):
         self.universe =  [
-             [0,0,1,0,0,0],
-             [0,0,1,0,0,0],
-             [0,0,1,0,0,0],
              [0,0,0,0,0,0],
+             [0,0,1,0,0,0],
+             [0,0,1,0,0,0],
+             [0,0,1,0,0,0],
              [0,0,0,0,0,0],
              [0,0,0,0,0,0]
           ]
         self.next_universe =  [
              [0,0,0,0,0,0],
-             [0,1,1,1,0,0],
              [0,0,0,0,0,0],
+             [0,1,1,1,0,0],
              [0,0,0,0,0,0],
              [0,0,0,0,0,0],
              [0,0,0,0,0,0]
@@ -60,12 +60,12 @@ class game_of_life_test(TestCase):
         self.assertEqual(self.alive_neighbours, 1)
         
     def count_alive_neighbours_two_test(self):
-        self.current_cell = [2,1]
+        self.current_cell = [1,1]
         self.alive_neighbours = count_alive_neighbours(self.universe, self.current_cell)
         self.assertEqual(self.alive_neighbours, 2)
         
     def count_alive_neighbours_three_test(self):
-        self.current_cell = [1,1]
+        self.current_cell = [2,1]
         self.alive_neighbours = count_alive_neighbours(self.universe, self.current_cell)
         self.assertEqual(self.alive_neighbours, 3) 
         

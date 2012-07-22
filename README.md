@@ -14,8 +14,14 @@ the other (default) is the Gosper Glider Gun which is a fair bit more interestin
 
 ## Usage
 
-	game_of_life.py -h # Usage
+	# Usage
+	game_of_life.py -h 
 
-	game_of_life.py # Run with defaults - 50 generations, no detailed grid (only alive cells)
-	game_of_life.py -g 200 # Run for 200 generations, no detailed grid
-	game_of_life.py -g 200 -s # Run for 200 generations, show full grid 
+	# Run with defaults - 50 generations, no detailed grid (only alive cells)
+	game_of_life.py
+	
+	# Run for 200 generations, no detailed grid
+	game_of_life.py -g 200
+	
+	# Run for 200 generations, show full grid 
+	game_of_life.py -g 200 -s 
