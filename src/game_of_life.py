@@ -84,7 +84,7 @@ def process_rules(current_cell_value, alive_neighbour_count):
             return 1
         else:
             # still dead
-            #print "still dead due to less that 3 neighbours"
+            #print "still dead due to anything other than 3 neighbours"
             return 0
     else:
         if alive_neighbour_count < 2:

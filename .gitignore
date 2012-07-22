@@ -1,0 +1,14 @@
+
+.project
+
+.pydevproject
+
+src/__init__.pyc
+
+src/game_of_life.pyc
+
+src/grid.pyc
+
+test/__init__.pyc
+
+test/test_game_of_life.pyc
