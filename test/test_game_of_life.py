@@ -39,6 +39,14 @@ class game_of_life_test(TestCase):
              [0,0,0,0,0,0],
              [0,0,0,0,0,0]
           ]
+        self.wrap_test_universe =  [
+             [0,0,0,0,0,0],
+             [0,0,0,0,0,0],
+             [0,0,0,0,0,0],
+             [0,0,0,0,0,0],
+             [0,0,0,0,0,0],
+             [0,0,1,1,1,0]
+          ]
         
     
     def count_alive_neighbours_none_test(self):
@@ -103,5 +111,17 @@ class game_of_life_test(TestCase):
         self.end_state = process_rules(self.current_cell_value, self.alive_neighbour_count)
         self.assertEqual(self.end_state, 0)
         
+    def no_wrap_around_test_expected(self):
+        self.current_cell = [0,3]
+        alive_neightbour_count = count_alive_neighbours(self.wrap_test_universe, self.current_cell)
+        self.assertEqual(alive_neightbour_count, 0)
+    
+    def no_wrap_around_test_not_expected(self):
+        self.current_cell = [0,3]
+        alive_neightbour_count = count_alive_neighbours(self.wrap_test_universe, self.current_cell)
+        # 3 alive neghbours will be present if top wraps to bottom 
+        self.assertNotEqual(alive_neightbour_count, 3)
+        
+
     def process_cells_test(self):
         self.assertEqual(process_cells(self.universe), self.next_universe)

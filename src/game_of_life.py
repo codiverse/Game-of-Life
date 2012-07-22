@@ -1,43 +1,44 @@
 #!/usr/bin/python
 
+#
+# Implementation of Conway's Game of Life
+#
+# Works on a provided 'layout' from same directory level file - grid.py
+#
+# Terminology and operation:
+#
+# 'Universe' is comprised of a 'grid' 'layout', made up of 'cells'.
+#
+# Cells are stored in 'columns' and 'rows', a 2d nested list in code terms,
+# they can either be 'alive' (represented by a 1) or 'dead' (by a 0).
+#
+# Each change of the grid layout is a 'Generation' and matches a time 'tick',
+# which is accompanied by a refresh of the screen.
+#
+# Usage:
+# python game_of_life.py <number of generations to run for>
+# eg.
+# python game_of_life.py 200
+#
+# (default generation run is 10, occurs if no argument is provided)
+#
+
 import sys
 import os
 from copy import deepcopy
 from time import sleep
 
 import grid
-
-"""
-def create_universe():
-    universe  = [
-                 [0,0,0,0,0,0],
-                 [0,1,1,1,0,0],
-                 [0,0,0,0,0,0],
-                 [0,0,0,0,0,0],
-                 [0,0,0,0,0,0],
-                 [0,0,0,0,0,0]
-                ]
-    
-    return universe
-"""
     
 def show_universe(universe):
-    #universe_height = len(universe)
-    #print "universe height = %s"  % universe_height
-    #universe_width = len(universe[0])
-    #print "universe_width = %s" % universe_width
-    #print ""
-    
-    #for row in universe:
-    #    print row
-
+    """ Prints the Universe to screen, a row (line) at a time """
     row_number = 0
     column_number = 0
     line = ""
     
     for row in universe:
         for cell in row:
-            current_cell = [row_number,column_number]
+            current_cell = [row_number, column_number]
             if universe[current_cell[0]][current_cell[1]] == 0:
                 #line += "[   ]"
                 line += "   "
@@ -49,34 +50,45 @@ def show_universe(universe):
         print line
         line = ""
         column_number = 0
-        row_number +=1
-        print ""
+        row_number += 1
 
 def count_alive_neighbours(universe, current_cell):
+    """ Counts the surrounding 8 cells that are of value 1 (alive) 
+    
+    Works on a single input cell at a time.
+    
+    Returns the sum total of alive surrounding cells.  
+    
+    """
     current_row = current_cell[0]
     current_column = current_cell[1]
-    
-    #print "current row = %d" % current_row
-    #print "current column = %d" % current_column
-
-    #print "full row = %s" % universe[current_row]
 
     try:
-        total = 0
-        total += universe[current_row - 1][current_column - 1]
-        total += universe[current_row - 1][current_column]
-        total += universe[current_row - 1][current_column + 1]
-        total += universe[current_row][current_column - 1]
-        total += universe[current_row][current_column + 1]
-        total += universe[current_row + 1][current_column - 1]
-        total += universe[current_row + 1][current_column]
-        total += universe[current_row + 1][current_column + 1]
+        # Prevents 'wrap around' of grid due to possibility of negative indexes
+        if current_row - 1 < 0 or current_column - 1 < 0:
+            return 0
+        else:
+            total = 0
+            total += universe[current_row - 1][current_column - 1]
+            total += universe[current_row - 1][current_column]
+            total += universe[current_row - 1][current_column + 1]
+            total += universe[current_row][current_column - 1]
+            total += universe[current_row][current_column + 1]
+            total += universe[current_row + 1][current_column - 1]
+            total += universe[current_row + 1][current_column]
+            total += universe[current_row + 1][current_column + 1]
     except (IndexError):
         pass
     
     return total
 
 def process_rules(current_cell_value, alive_neighbour_count):
+    """ Runs the rule set against the current cell and its neighbour count.
+    
+    Returns the final cell state.
+    
+    """
+    
     if current_cell_value == 0:
         if alive_neighbour_count == 3:
             # born
@@ -103,34 +115,45 @@ def process_rules(current_cell_value, alive_neighbour_count):
             return 0
 
 def process_cells(universe):
+    """ Works through every cell in the provided Universe.
+    
+    Acquires in turn each cell's position and current value.
+    Also calculates the sum of alive cells surrounding it.
+    Runs the current value and the sum of alive surrounding cells 
+    against the ruleset, altering state as appropriate.
+    
+    Returns the next Universe layout grid.
+    
+    """
+
+    # deepcopy (recursive) is required due to nested list objects
     next_universe = deepcopy(universe)
     row_number = 0
     column_number = 0
     for row in universe:
         for cell in row:
-            current_cell = [row_number,column_number]
-            #print "current cell = %s" % current_cell
-            alive_neighbour_count =  count_alive_neighbours(universe, current_cell)
+            current_cell = [row_number, column_number]
+            alive_neighbour_count = count_alive_neighbours(universe, 
+                                                           current_cell)
             current_cell_value = universe[current_cell[0]][current_cell[1]]
             end_state = process_rules(current_cell_value, alive_neighbour_count)
             next_universe[row_number][column_number] = end_state
             column_number += 1
         column_number = 0
-        row_number +=1
+        row_number += 1
     
     return next_universe
 
 def main():
     generation = 0
-    #universe = create_universe()
     universe = grid.layout
     
-    for tick in range(count+1):
+    # tick spans a generation
+    for tick in range(count + 1):
         os.system('clear')
         print "generation %d / %d" % (generation, count)
         print "" 
         current_state = universe
-        #print "current state:\n"
         show_universe(current_state)
         print ""
     
@@ -142,26 +165,11 @@ def main():
         
 
 if __name__ == "__main__":
+    # A single argument can be provided - the number of generations to run for.
     if len(sys.argv) == 2:
         count = int(sys.argv[1])
     else:
+        # Default generation run is 10
         count = 10
     os.system('clear')
     main()
-    
-
-"""
-current_cell = [0,1]
-alive_neighbour_count =  count_alive_neighbours(universe, current_cell)
-print "alive neighbours = %d" % alive_neighbour_count
-
-current_cell_value = universe[current_cell[0]][current_cell[1]]
-
-print process_rules(current_cell_value, alive_neighbour_count)
-"""
-
-"""
-next_state = deepcopy(universe)
-next_state[0][0] = 1
-show_universe(next_state)
-"""
