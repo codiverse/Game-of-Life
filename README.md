@@ -12,7 +12,7 @@ An early Python project for myself, experimenting with building something from s
 There are two example grid layouts provided, one is a simple oscillator that is also used in the tests,
 the other is the Gosper Glider Gun which is a fair bit more interesting to watch :-)
 
-### Usage
+## Usage
 
 	python game_of_life.py <number of generations to run for>
 	eg.
