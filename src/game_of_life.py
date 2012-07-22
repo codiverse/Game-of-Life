@@ -9,7 +9,7 @@
 #
 # 'Universe' is comprised of a 'grid' 'layout', made up of 'cells'.
 #
-# Cells are stored in 'columns' and 'rows', a 2d nested list in code terms,
+# Cells are stored in 'columns' and 'rows', a 2D nested list in code terms,
 # they can either be 'alive' (represented by a 1) or 'dead' (by a 0).
 #
 # Each change of the grid layout is a 'Generation' and matches a time 'tick',
@@ -25,12 +25,16 @@
 
 import sys
 import os
+
+from optparse import OptionParser
 from copy import deepcopy
 from time import sleep
 
+# Same directory level grid.py file, should contain 2D list 'layout'
 import grid
+
     
-def show_universe(universe):
+def show_universe(universe,show_grid):
     """ Prints the Universe to screen, a row (line) at a time """
     row_number = 0
     column_number = 0
@@ -40,11 +44,15 @@ def show_universe(universe):
         for cell in row:
             current_cell = [row_number, column_number]
             if universe[current_cell[0]][current_cell[1]] == 0:
-                #line += "[   ]"
-                line += "   "
+                if show_grid == True:
+                    line += "[ ]"
+                else:
+                    line += "   "
             else:
-                #line += "[ * ]"
-                line += " * "
+                if show_grid == True:
+                    line += "[*]"
+                else:
+                    line += " * "
             column_number += 1
             
         print line
@@ -144,18 +152,37 @@ def process_cells(universe):
     
     return next_universe
 
+def set_options():
+    """ Separated out to keep main() code cleaner """
+    # TODO: add option for which layout to use
+    parser = OptionParser()
+    parser.add_option("-g", "--generations", dest="generations", default=50, 
+                      help="Number of Generations to run for")
+    parser.add_option("-s", "--showgrid", dest="show_grid", 
+                      action="store_true", default=False, 
+                      help="Specify whether to show detailed universe grid")
+    (options, args) = parser.parse_args()
+
+    show_grid = options.show_grid
+    generations = int(options.generations)
+    
+    return (show_grid, generations)
+    
+
 def main():
+    show_grid, generations = set_options()
+    
     generation = 0
     universe = grid.layout
     
     # tick spans a generation
-    for tick in range(count + 1):
+    for tick in range(generations+1):
         os.system('clear')
-        print "generation %d / %d" % (generation, count)
-        print "" 
+        print "generation %d / %d" % (generation, generations)
         current_state = universe
-        show_universe(current_state)
-        print ""
+        show_universe(current_state,show_grid)
+        if generation == 0:
+            sleep(1)
     
         next_universe = process_cells(universe)
         universe = next_universe
@@ -165,11 +192,5 @@ def main():
         
 
 if __name__ == "__main__":
-    # A single argument can be provided - the number of generations to run for.
-    if len(sys.argv) == 2:
-        count = int(sys.argv[1])
-    else:
-        # Default generation run is 10
-        count = 10
     os.system('clear')
     main()

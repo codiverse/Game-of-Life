@@ -10,14 +10,12 @@ An early Python project for myself, experimenting with building something from s
 ## Example Grid Layouts
 
 There are two example grid layouts provided, one is a simple oscillator that is also used in the tests,
-the other is the Gosper Glider Gun which is a fair bit more interesting to watch :-)
+the other (default) is the Gosper Glider Gun which is a fair bit more interesting to watch :-)
 
 ## Usage
 
-	python game_of_life.py <number of generations to run for>
-	eg.
-	python game_of_life.py 200
-	
-If no number of generations is provided the default run is 10.
+	game_of_life.py -h # Usage
 
-There is no sophistication to the argument parsing at present, so it will break easily.
+	game_of_life.py # Run with defaults - 50 generations, no detailed grid (only alive cells)
+	game_of_life.py -g 200 # Run for 200 generations, no detailed grid
+	game_of_life.py -g 200 -s # Run for 200 generations, show full grid 
