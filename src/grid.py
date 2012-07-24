@@ -31,3 +31,23 @@ layout  = [
              [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
              [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
         ]
+
+def random_universe(size):
+    global layout
+    from copy import deepcopy
+    from random import randint
+     
+    if size:
+         rand_layout = [[0 for i in range(size)] for j in range(size)]
+    else:
+        rand_layout = deepcopy(layout)
+    row_number = 0
+    column_number = 0
+    for row in rand_layout:
+        for cell in row:
+            current_cell = [row_number, column_number]
+            rand_layout[row_number][column_number] = randint(0,1)
+            column_number += 1
+        column_number = 0
+        row_number += 1
+    return rand_layout

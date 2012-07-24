@@ -32,9 +32,10 @@ from time import sleep
 
 # Same directory level grid.py file, should contain 2D list 'layout'
 import grid
+from grid import random_universe
 
     
-def show_universe(universe,show_grid):
+def show_universe(universe, show_grid, character):
     """ Prints the Universe to screen, a row (line) at a time """
     row_number = 0
     column_number = 0
@@ -50,9 +51,9 @@ def show_universe(universe,show_grid):
                     line += "   "
             else:
                 if show_grid == True:
-                    line += "[*]"
+                    line += "[%s]" % character
                 else:
-                    line += " * "
+                    line += " %s " % character
             column_number += 1
             
         print line
@@ -161,33 +162,49 @@ def set_options():
     parser.add_option("-s", "--showgrid", dest="show_grid", 
                       action="store_true", default=False, 
                       help="Specify whether to show detailed universe grid")
+    parser.add_option("-r", "--randomsize", dest="random_size", 
+                      default = 0, 
+                      help="Build a random Universe of this grid size")
+    parser.add_option("-t", "--timetick", dest="time_tick", default=0.1,
+                      help="The time interval of generations, in seconds")
+    parser.add_option("-c", "--character", dest="character", default="#",
+                      help="Character used to display a living cell")
     (options, args) = parser.parse_args()
 
     show_grid = options.show_grid
     generations = int(options.generations)
+    random_size = int(options.random_size)
+    time_tick = float(options.time_tick)
+    character = options.character
     
-    return (show_grid, generations)
+    return (show_grid, generations,random_size, time_tick, character)
     
 
 def main():
-    show_grid, generations = set_options()
+    show_grid, generations, random_size, time_tick, character = set_options()
     
     generation = 0
-    universe = grid.layout
+    if random_size != 0:
+        universe = random_universe(random_size)
+    else:
+        universe = grid.layout
     
     # tick spans a generation
     for tick in range(generations+1):
         os.system('clear')
-        print "generation %d / %d" % (generation, generations)
+        print "generation %d / %d [%s seconds per generation]" % (generation, 
+                                                           generations, 
+                                                           time_tick)
         current_state = universe
-        show_universe(current_state,show_grid)
+        show_universe(current_state,show_grid, character)
         if generation == 0:
             sleep(1)
     
         next_universe = process_cells(universe)
         universe = next_universe
+    
+        sleep(time_tick)
         
-        sleep(0.1)
         generation += 1
         
 
