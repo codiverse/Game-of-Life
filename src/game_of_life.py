@@ -16,12 +16,9 @@
 # which is accompanied by a refresh of the screen.
 #
 # Usage:
-# python game_of_life.py <number of generations to run for>
-# eg.
-# python game_of_life.py 200
+# python game_of_life.py -h
 #
-# (default generation run is 10, occurs if no argument is provided)
-#
+
 
 import sys
 import os
