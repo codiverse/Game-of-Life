@@ -4,8 +4,6 @@ http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 
 This is an implementation of Conway's game of life in Python.
 
-An early Python project for myself, experimenting with building something from scratch.
-
 
 ## Example Grid Layouts
 
